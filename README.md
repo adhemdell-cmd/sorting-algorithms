@@ -32,7 +32,7 @@
 Requirements: GNU/Linux with `gcc`, GNU `make`, glibc, and a GNU-compatible linker (`--wrap` is used for heap tracking). Python 3 + matplotlib are needed **only** to regenerate the charts.
 
 ```bash
-git clone https://github.com/<username>/sorting-algorithms.git
+git clone https://github.com/adhemdell-cmd/sorting-algorithms.git
 cd sorting-algorithms
 make              # builds ./sorting
 make run          # interactive menu
