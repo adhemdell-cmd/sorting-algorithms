@@ -99,9 +99,9 @@ static int compare_size(size_t n, data_type type, FILE *csv, int quiet_header)
     int *master = generate_array(n, type, DEFAULT_SEED);
     if (!master) { puts("Out of memory."); return -1; }
 
-    bench_result res[NUM_ALGOS], ref;
-    int rank[NUM_ALGOS];
-    for (int i = 0; i < NUM_ALGOS; i++) {
+    bench_result res[5], ref;
+    int rank[5];
+    for (int i = 0; i < 5; i++) {
         int runs = benchmark_default_runs(&ALGOS[i], n);
         if (benchmark_sort(ALGOS[i].fn, master, n, runs, &res[i]) != 0) {
             puts("Measurement failed."); free(master); return -1;
@@ -113,13 +113,13 @@ static int compare_size(size_t n, data_type type, FILE *csv, int quiet_header)
         return -1;
     }
 
-    for (int i = 0; i < NUM_ALGOS; i++) {
+    for (int i = 0; i < 5; i++) {
         rank[i] = 1;
-        for (int j = 0; j < NUM_ALGOS; j++)
+        for (int j = 0; j < 5; j++)
             if (res[j].wall_ms < res[i].wall_ms) rank[i]++;
     }
     if (!quiet_header) print_header();
-    for (int i = 0; i < NUM_ALGOS; i++) {
+    for (int i = 0; i < 5; i++) {
         print_row(ALGOS[i].name, n, &res[i], rank[i]);
         if (csv) fprintf(csv, "%s,%zu,%s,%d,%.4f,%.4f,%.4f,%.4f,%.4f,%d,%d\n",
                          DATA_TYPE_NAMES[type], n, ALGOS[i].name, res[i].runs,
@@ -250,10 +250,10 @@ static void print_menu(void)
     puts("3. Insertion Sort");
     puts("4. Merge Sort");
     puts("5. Quick Sort");
-    puts("6. Heap Sort");
-    puts("7. Shell Sort");
-    puts("8. Counting Sort");
-    puts("9. Compare all algorithms");
+    puts("6. Compare the five main algorithms");
+    puts("7. Heap Sort (Bonus)");
+    puts("8. Shell Sort (Bonus)");
+    puts("9. Counting Sort (Bonus)");
     puts("10. Big array example (100 000 integers)");
     puts("0. Exit");
 }
@@ -274,9 +274,10 @@ int main(int argc, char **argv)
         if (c == -1) { puts("\nEnd of input. Bye!"); break; }
         if (c == -2) { puts("Invalid choice, please enter a number between 0 and 10."); continue; }
         if (c == 0) { puts("Bye!"); break; }
-        if (c >= 1 && c <= NUM_ALGOS) run_single((int)c - 1);
-        else if (c == 9) run_compare();
-        else run_big();
+        if (c >= 1 && c <= 5) run_single((int)c - 1);
+        else if (c == 6) run_compare();
+        else if (c >= 7 && c <= 9) run_single((int)c - 2);
+        else if (c == 10) run_big();
     }
     return 0;
 }
