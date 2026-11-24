@@ -1,0 +1,18 @@
+# compiled files
+sorting
+test_sorting
+*.o
+*.out
+*.exe
+*.dSYM/
+
+# python cache / virtual envs (plot script)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
